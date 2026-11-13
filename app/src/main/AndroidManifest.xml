@@ -27,6 +27,9 @@
         <activity
             android:name=".TransactionListActivity"
             android:exported="false" />
+        <activity
+            android:name=".StatisticsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

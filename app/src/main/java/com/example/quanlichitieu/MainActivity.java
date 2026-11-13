@@ -101,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
 
+            if (id == R.id.nav_statistics) {
+                startActivity(new Intent(
+                        MainActivity.this,
+                        StatisticsActivity.class
+                ));
+                return true;
+            }
+
             if (id == R.id.nav_home) {
                 return true;
             }

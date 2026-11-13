@@ -74,6 +74,12 @@ public class TransactionListActivity extends AppCompatActivity {
                 return true;
             }
 
+            if (id == R.id.nav_statistics) {
+                startActivity(new Intent(TransactionListActivity.this, StatisticsActivity.class));
+                finish();
+                return true;
+            }
+
             return id == R.id.nav_transaction;
         });
 
