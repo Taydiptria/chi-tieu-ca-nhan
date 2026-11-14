@@ -15,7 +15,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,7 +36,7 @@ public class AddTransactionActivity extends AppCompatActivity {
 
     private AppDatabase database;
     private ArrayAdapter<String> categoryAdapter;
-    private String[] categories;
+    private final List<String> categoryList = new ArrayList<>();
 
     private final ExecutorService executor =
             Executors.newSingleThreadExecutor();
@@ -55,19 +57,10 @@ public class AddTransactionActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         btnDelete = findViewById(R.id.btnDelete);
 
-        categories = new String[]{
-                "Ăn uống",
-                "Học tập",
-                "Đi lại",
-                "Lương",
-                "Thưởng",
-                "Khác"
-        };
-
         categoryAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
-                categories
+                categoryList
         );
 
         categoryAdapter.setDropDownViewResource(
@@ -93,6 +86,36 @@ public class AddTransactionActivity extends AppCompatActivity {
             btnDelete.setVisibility(View.VISIBLE);
             loadTransactionForEdit();
         }
+
+        loadCategoriesFromDatabase();
+    }
+
+    private void loadCategoriesFromDatabase() {
+        executor.execute(() -> {
+            CategoryDao dao = database.categoryDao();
+            List<CategoryEntity> entities = dao.getAllCategories();
+            if (entities.isEmpty()) {
+                dao.insert(new CategoryEntity("Ăn uống", "Chi tiêu"));
+                dao.insert(new CategoryEntity("Học tập", "Chi tiêu"));
+                dao.insert(new CategoryEntity("Đi lại", "Chi tiêu"));
+                dao.insert(new CategoryEntity("Lương", "Thu nhập"));
+                dao.insert(new CategoryEntity("Thưởng", "Thu nhập"));
+                dao.insert(new CategoryEntity("Khác", "Chi tiêu"));
+                entities = dao.getAllCategories();
+            }
+
+            List<String> names = new ArrayList<>();
+            for (CategoryEntity cat : entities) {
+                names.add(cat.name);
+            }
+
+            runOnUiThread(() -> {
+                categoryList.clear();
+                categoryList.addAll(names);
+                categoryAdapter.notifyDataSetChanged();
+                populateCategorySelection();
+            });
+        });
     }
 
     private String getCurrentDate() {
@@ -152,14 +175,7 @@ public class AddTransactionActivity extends AppCompatActivity {
             rgType.check(R.id.rbExpense);
         }
 
-        if (currentTransaction.category != null) {
-            for (int i = 0; i < categories.length; i++) {
-                if (categories[i].equalsIgnoreCase(currentTransaction.category)) {
-                    spCategory.setSelection(i);
-                    break;
-                }
-            }
-        }
+        populateCategorySelection();
 
         if (currentTransaction.date != null && !currentTransaction.date.isEmpty()) {
             selectedDate = currentTransaction.date;
@@ -168,6 +184,17 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         if (currentTransaction.note != null) {
             edtNote.setText(currentTransaction.note);
+        }
+    }
+
+    private void populateCategorySelection() {
+        if (currentTransaction != null && currentTransaction.category != null) {
+            for (int i = 0; i < categoryList.size(); i++) {
+                if (categoryList.get(i).equalsIgnoreCase(currentTransaction.category)) {
+                    spCategory.setSelection(i);
+                    break;
+                }
+            }
         }
     }
 
@@ -205,7 +232,10 @@ public class AddTransactionActivity extends AppCompatActivity {
             type = "Chi tiêu";
         }
 
-        String category = spCategory.getSelectedItem().toString();
+        String category = (spCategory.getSelectedItem() != null)
+                ? spCategory.getSelectedItem().toString()
+                : "Khác";
+
         String note = edtNote.getText().toString().trim();
 
         btnSave.setEnabled(false);

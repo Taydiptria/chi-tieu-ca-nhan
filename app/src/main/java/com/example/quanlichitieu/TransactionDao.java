@@ -26,4 +26,10 @@ public interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE id = :id LIMIT 1")
     TransactionEntity getTransactionById(int id);
+
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE type = 'Thu nhập'")
+    double getTotalIncome();
+
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE type = 'Chi tiêu'")
+    double getTotalExpense();
 }
