@@ -80,6 +80,12 @@ public class TransactionListActivity extends AppCompatActivity {
                 return true;
             }
 
+            if (id == R.id.nav_category) {
+                startActivity(new Intent(TransactionListActivity.this, CategoryActivity.class));
+                finish();
+                return true;
+            }
+
             return id == R.id.nav_transaction;
         });
 

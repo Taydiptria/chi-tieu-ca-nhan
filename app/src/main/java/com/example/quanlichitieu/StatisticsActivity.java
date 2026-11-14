@@ -153,6 +153,11 @@ public class StatisticsActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
+            if (id == R.id.nav_category) {
+                startActivity(new Intent(StatisticsActivity.this, CategoryActivity.class));
+                finish();
+                return true;
+            }
             return id == R.id.nav_statistics;
         });
     }

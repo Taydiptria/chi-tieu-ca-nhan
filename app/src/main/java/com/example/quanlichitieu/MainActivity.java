@@ -101,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
 
+            if (id == R.id.nav_category) {
+                startActivity(new Intent(
+                        MainActivity.this,
+                        CategoryActivity.class
+                ));
+                return true;
+            }
+
             if (id == R.id.nav_statistics) {
                 startActivity(new Intent(
                         MainActivity.this,
@@ -120,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (bottomNav != null) {
+        if (bottomNav != null && bottomNav.getSelectedItemId() != R.id.nav_home) {
             bottomNav.setSelectedItemId(R.id.nav_home);
         }
         loadTransactions();
@@ -138,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             double totalExpense = 0;
 
             for (TransactionEntity transaction : allTransactions) {
-
                 if ("Thu nhập".equals(transaction.type)) {
                     totalIncome += transaction.amount;
                 } else {
@@ -147,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             double balance = totalIncome - totalExpense;
+
             final double income = totalIncome;
             final double expense = totalExpense;
             final double balanceFinal = balance;
