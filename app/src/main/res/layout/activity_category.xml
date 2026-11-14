@@ -35,103 +35,116 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- Form Thêm Danh Mục -->
-    <androidx.cardview.widget.CardView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollViewCategory"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="3dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="8dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="24dp">
+
+            <!-- Form Thêm Danh Mục -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thêm danh mục mới"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edtCategoryName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="Nhập tên danh mục (ví dụ: Mua sắm)"
+                        android:inputType="textCapWords|textAutoCorrect"
+                        android:padding="12dp" />
+
+                    <RadioGroup
+                        android:id="@+id/rgCategoryType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbExpense"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="Chi tiêu" />
+
+                        <RadioButton
+                            android:id="@+id/rbIncome"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Thu nhập" />
+                    </RadioGroup>
+
+                    <Button
+                        android:id="@+id/btnAddCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:backgroundTint="#4CAF50"
+                        android:text="Thêm danh mục"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thêm danh mục mới"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Danh sách danh mục hiện có"
+                android:textColor="#616161"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/edtCategoryName"
+            <!-- RecyclerView Danh sách -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCategories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Nhập tên danh mục (ví dụ: Mua sắm)"
-                android:inputType="textCapWords|textAutoCorrect"
-                android:padding="12dp" />
+                android:nestedScrollingEnabled="false" />
 
-            <RadioGroup
-                android:id="@+id/rgCategoryType"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvEmptyCategories"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rbExpense"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:text="Chi tiêu" />
-
-                <RadioButton
-                    android:id="@+id/rbIncome"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Thu nhập" />
-            </RadioGroup>
-
-            <Button
-                android:id="@+id/btnAddCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:backgroundTint="#4CAF50"
-                android:text="Thêm danh mục"
-                android:textColor="@android:color/white" />
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:text="Chưa có danh mục nào"
+                android:textColor="#9E9E9E"
+                android:textSize="16sp"
+                android:visibility="gone" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="Danh sách danh mục hiện có"
-        android:textColor="#616161"
-        android:textSize="14sp"
-        android:textStyle="bold" />
-
-    <!-- RecyclerView Danh sách -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvCategories"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="16dp" />
-
-        <TextView
-            android:id="@+id/tvEmptyCategories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Chưa có danh mục nào"
-            android:textColor="#9E9E9E"
-            android:textSize="16sp"
-            android:visibility="gone" />
-    </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

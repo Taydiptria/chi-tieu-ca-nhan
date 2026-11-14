@@ -53,6 +53,7 @@ public class CategoryActivity extends AppCompatActivity {
         tvEmptyCategories = findViewById(R.id.tvEmptyCategories);
 
         rvCategories.setLayoutManager(new LinearLayoutManager(this));
+        rvCategories.setNestedScrollingEnabled(false);
         adapter = new CategoryAdapter(categoryList);
         rvCategories.setAdapter(adapter);
     }
